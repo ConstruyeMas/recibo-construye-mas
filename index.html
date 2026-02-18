@@ -53,14 +53,15 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
 }
 
 .slider-track{
-  position:relative;
-  width:100%;
-  height:72px;
-  background:#e6e6e6;
-  border-radius:50px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
+   position:relative;
+   width:100%;
+   height:72px;
+   background:#e6e6e6;
+   border-radius:50px;
+   overflow:hidden;
+   display:flex;
+   align-items:center;
+   box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
 }
 
 .slider-text{
@@ -73,17 +74,18 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
 }
 
 .slider-thumb{
-  width:64px;
-  height:64px;
-  background:#000;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:absolute;
-  left:4px;
-  transition:transform 0.25s ease;
-  touch-action:none;
+   width:64px;
+   height:64px;
+   background:#000;
+   border-radius:50%;
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   position:absolute;
+   left:4px;
+   transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+   touch-action:none;
 }
      html, body{
   height:100%;
@@ -282,7 +284,9 @@ if(slider){
 
     let track = slider.parentElement;
     let rect = track.getBoundingClientRect();
-    let maxMove = track.offsetWidth - slider.offsetWidth;
+
+    // 👇 SOLO 50% DEL TRACK
+    let maxMove = (track.offsetWidth - slider.offsetWidth) * 0.5;
 
     let touchX = e.touches[0].clientX - rect.left;
     let newX = touchX - (slider.offsetWidth / 2);
@@ -297,19 +301,28 @@ if(slider){
   slider.addEventListener("touchend", function(){
 
     let track = slider.parentElement;
-    let maxMove = track.offsetWidth - slider.offsetWidth;
+    let maxMove = (track.offsetWidth - slider.offsetWidth) * 0.5;
 
     let currentTransform = slider.style.transform;
     let currentX = currentTransform
       ? parseFloat(currentTransform.replace("translateX(","").replace("px)",""))
       : 0;
 
-    if(currentX > maxMove * 0.6){
-      vista();
+    // 👇 Solo necesita llegar al 80% de ese 50%
+    if(currentX > maxMove * 0.8){
+      slider.style.transition = "transform 0.2s ease-out";
+      slider.style.transform = `translateX(${maxMove}px)`;
+
+      setTimeout(() => {
+        vista();
+        slider.style.transform = "translateX(0px)";
+      }, 180);
+
+    } else {
+      slider.style.transition = "transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+      slider.style.transform = "translateX(0px)";
     }
 
-    slider.style.transition = "transform 0.25s ease";
-    slider.style.transform = "translateX(0px)";
   });
 
 }
