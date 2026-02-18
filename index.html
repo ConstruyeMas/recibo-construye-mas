@@ -55,9 +55,9 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
 .slider-track{
   position:relative;
   width:100%;
-  height:60px;
-  background:rgba(0,0,0,0.1);
-  border-radius:40px;
+  height:72px;
+  background:#e6e6e6;
+  border-radius:50px;
   overflow:hidden;
   display:flex;
   align-items:center;
@@ -73,20 +73,17 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
 }
 
 .slider-thumb{
-  width:55px;
-  height:55px;
+  width:64px;
+  height:64px;
   background:#000;
-  color:#fff;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:24px;
-  cursor:pointer;
   position:absolute;
-  left:3px;
-  transition:0.3s;
-     touch-action: none;
+  left:4px;
+  transition:transform 0.25s ease;
+  touch-action:none;
 }
      html, body{
   height:100%;
@@ -108,7 +105,7 @@ body{
 <div id="screen-capture">
 
 <h3>Construye Más by 
-Ing. José Manuel Campos Castellanos - V2.18</h3>
+Ing. José Manuel Campos Castellanos</h3>
 
 <input type="text" id="cliente" placeholder="Nombre del cliente">
 <input type="text" id="trabajo" placeholder="Nombre del trabajo / Proyecto">
@@ -117,7 +114,7 @@ Ing. José Manuel Campos Castellanos - V2.18</h3>
 <div class="slider-container">
   <div class="slider-track">
     <div class="slider-thumb" id="sliderThumb">
-      🏗️
+      <img src="icon-192.png" style="width:36px; height:36px;">
     </div>
     <span class="slider-text">Deslizar para Construye MÁS</span>
   </div>
@@ -307,7 +304,7 @@ if(slider){
       ? parseFloat(currentTransform.replace("translateX(","").replace("px)",""))
       : 0;
 
-    if(currentX > maxMove * 0.75){
+    if(currentX > maxMove * 0.6){
       vista();
     }
 
