@@ -87,6 +87,9 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
    transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
    touch-action:none;
+     user-select: none;
+-webkit-user-select: none;
+-webkit-touch-callout: none;
 }
      html, body{
   height:100%;
@@ -117,7 +120,9 @@ Ing. José Manuel Campos Castellanos</h3>
 <div class="slider-container">
   <div class="slider-track">
     <div class="slider-thumb" id="sliderThumb">
-      <img src="icon-192.png" style="width:36px; height:36px;">
+     <img src="icon-192.png" 
+     draggable="false"
+     style="width:36px; height:36px; pointer-events:none;">
     </div>
     <span class="slider-text">Deslizar para Construye MÁS</span>
   </div>
