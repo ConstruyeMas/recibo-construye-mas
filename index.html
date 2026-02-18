@@ -86,7 +86,20 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
   position:absolute;
   left:3px;
   transition:0.3s;
-}     
+     touch-action: none;
+}
+     html, body{
+  height:100%;
+  overflow:hidden;
+  overscroll-behavior: none;
+}
+
+/* Evita rebote lateral en iOS */
+body{
+  position: fixed;
+  width:100%;
+}
+
 </style>
 </head>
 
