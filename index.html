@@ -277,33 +277,41 @@ function nuevo(){location.reload();}
 
 const slider = document.getElementById("sliderThumb");
 /* ===== SLIDER CONSTRUYE MÁS (VERSIÓN ESTABLE iPhone) ===== */
-
 if(slider){
-
-  let startX = 0;
-  let currentX = 0;
-  let maxMove = slider.parentElement.offsetWidth - 55;
-
-  slider.addEventListener("touchstart", function(e){
-    startX = e.touches[0].clientX;
-  });
 
   slider.addEventListener("touchmove", function(e){
 
-    currentX = e.touches[0].clientX - startX;
+    e.preventDefault();
 
-    if(currentX < 0) currentX = 0;
-    if(currentX > maxMove) currentX = maxMove;
+    let track = slider.parentElement;
+    let rect = track.getBoundingClientRect();
+    let maxMove = track.offsetWidth - slider.offsetWidth;
 
-    slider.style.transform = "translateX(" + currentX + "px)";
-  });
+    let touchX = e.touches[0].clientX - rect.left;
+    let newX = touchX - (slider.offsetWidth / 2);
+
+    if(newX < 0) newX = 0;
+    if(newX > maxMove) newX = maxMove;
+
+    slider.style.transform = `translateX(${newX}px)`;
+
+  }, { passive:false });
 
   slider.addEventListener("touchend", function(){
 
-    if(currentX > maxMove * 0.7){
+    let track = slider.parentElement;
+    let maxMove = track.offsetWidth - slider.offsetWidth;
+
+    let currentTransform = slider.style.transform;
+    let currentX = currentTransform
+      ? parseFloat(currentTransform.replace("translateX(","").replace("px)",""))
+      : 0;
+
+    if(currentX > maxMove * 0.75){
       vista();
     }
 
+    slider.style.transition = "transform 0.25s ease";
     slider.style.transform = "translateX(0px)";
   });
 
