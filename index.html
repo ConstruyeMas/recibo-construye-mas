@@ -254,31 +254,35 @@ function nuevo(){location.reload();}
      /* ===== SLIDER CONSTRUYE MÁS ===== */
 
 const slider = document.getElementById("sliderThumb");
-let isDown = false;
+/* ===== SLIDER CONSTRUYE MÁS (VERSIÓN ESTABLE iPhone) ===== */
 
 if(slider){
 
-  slider.addEventListener("touchstart", () => {
-    isDown = true;
+  let startX = 0;
+  let currentX = 0;
+  let maxMove = slider.parentElement.offsetWidth - 55;
+
+  slider.addEventListener("touchstart", function(e){
+    startX = e.touches[0].clientX;
   });
 
-  slider.addEventListener("touchend", () => {
-    if(parseInt(slider.style.left) > 200){
+  slider.addEventListener("touchmove", function(e){
+
+    currentX = e.touches[0].clientX - startX;
+
+    if(currentX < 0) currentX = 0;
+    if(currentX > maxMove) currentX = maxMove;
+
+    slider.style.transform = "translateX(" + currentX + "px)";
+  });
+
+  slider.addEventListener("touchend", function(){
+
+    if(currentX > maxMove * 0.7){
       vista();
     }
-    slider.style.left = "3px";
-    isDown = false;
-  });
 
-  slider.addEventListener("touchmove", (e) => {
-    if(!isDown) return;
-
-    let touch = e.touches[0];
-    let moveX = touch.clientX - slider.parentElement.getBoundingClientRect().left;
-
-    if(moveX > 0 && moveX < slider.parentElement.offsetWidth - 55){
-      slider.style.left = moveX + "px";
-    }
+    slider.style.transform = "translateX(0px)";
   });
 
 }
