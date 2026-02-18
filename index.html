@@ -39,10 +39,53 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
 .idGrande{font-size:22px;font-weight:bold;}
 
 .hidden{display:none}
+/* SLIDER PRO */
+
+.slider-container{
+  margin-top:30px;
+}
+
+.slider-track{
+  position:relative;
+  width:100%;
+  height:60px;
+  background:rgba(0,0,0,0.1);
+  border-radius:40px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+}
+
+.slider-text{
+  position:absolute;
+  width:100%;
+  text-align:center;
+  font-weight:bold;
+  color:#000;
+  letter-spacing:1px;
+}
+
+.slider-thumb{
+  width:55px;
+  height:55px;
+  background:#000;
+  color:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  cursor:pointer;
+  position:absolute;
+  left:3px;
+  transition:0.3s;
+}     
 </style>
 </head>
 
 <body style="margin:0; padding:0;">
+
+<div id="screen-capture">
 
 <h3>Construye Más by 
 Ing. José Manuel Campos Castellanos - V2.18</h3>
@@ -51,11 +94,18 @@ Ing. José Manuel Campos Castellanos - V2.18</h3>
 <input type="text" id="trabajo" placeholder="Nombre del trabajo / Proyecto">
 <input type="number" id="monto" placeholder="Monto en pesos">
 
-<button onclick="vista()">Generar</button>
+<div class="slider-container">
+  <div class="slider-track">
+    <div class="slider-thumb" id="sliderThumb">
+      🏗️
+    </div>
+    <span class="slider-text">Deslizar para Construye MÁS</span>
+  </div>
+</div>
 <button id="guardarBtn" class="hidden" onclick="guardar()">Guardar</button>
 <button id="pdfBtn" class="hidden" onclick="pdf()">Imprimir PDF</button>
 <button id="nuevoBtn" class="hidden" onclick="nuevo()">Nuevo Recibo</button>
-
+</div>
 <hr>
 
 <div id="recibo" class="hidden">
@@ -201,6 +251,38 @@ function pdf(){
 }
 
 function nuevo(){location.reload();}
+     /* ===== SLIDER CONSTRUYE MÁS ===== */
+
+const slider = document.getElementById("sliderThumb");
+let isDown = false;
+
+if(slider){
+
+  slider.addEventListener("touchstart", () => {
+    isDown = true;
+  });
+
+  slider.addEventListener("touchend", () => {
+    if(parseInt(slider.style.left) > 200){
+      vista();
+    }
+    slider.style.left = "3px";
+    isDown = false;
+  });
+
+  slider.addEventListener("touchmove", (e) => {
+    if(!isDown) return;
+
+    let touch = e.touches[0];
+    let moveX = touch.clientX - slider.parentElement.getBoundingClientRect().left;
+
+    if(moveX > 0 && moveX < slider.parentElement.offsetWidth - 55){
+      slider.style.left = moveX + "px";
+    }
+  });
+
+}
+     
 </script>
 
 </body>
