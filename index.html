@@ -54,7 +54,8 @@ button{width:100%;padding:12px;margin:5px 0;font-size:16px;background:black;colo
 
 .slider-track{
    position:relative;
-   width:100%;
+   width:70%;
+     margin:0 auto;
    height:72px;
    background:#e6e6e6;
    border-radius:50px;
@@ -286,7 +287,7 @@ if(slider){
     let rect = track.getBoundingClientRect();
 
     // 👇 SOLO 50% DEL TRACK
-    let maxMove = (track.offsetWidth - slider.offsetWidth) * 0.5;
+    let maxMove = track.offsetWidth - slider.offsetWidth - 8;
 
     let touchX = e.touches[0].clientX - rect.left;
     let newX = touchX - (slider.offsetWidth / 2);
@@ -309,7 +310,7 @@ if(slider){
       : 0;
 
     // 👇 Solo necesita llegar al 80% de ese 50%
-    if(currentX > maxMove * 0.8){
+    if(currentX > maxMove * 0.5){
       slider.style.transition = "transform 0.2s ease-out";
       slider.style.transform = `translateX(${maxMove}px)`;
 
