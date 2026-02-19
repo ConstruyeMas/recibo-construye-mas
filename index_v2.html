@@ -6,48 +6,8 @@
 <title>Recibo Construye Más V2</title>
 
 <style>
-    /* ===== SPLASH CINEMÁTICO ===== */
 
-#splashScreen{
-    position:fixed;
-    inset:0;
-    background:url('assets/img/splash.jpg') center/cover no-repeat;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    animation:bgCinematic 3.5s ease forwards;
-}
-
-.logoSplash{
-    opacity:0;
-    transform:translateY(25px);
-    animation:logoReveal 1s ease forwards;
-    animation-delay:2.5s;
-}
-
-.logoSplash img{
-    width:220px;
-}
-
-@keyframes bgCinematic{
-    0%{
-        transform:scale(1.1);
-        filter:blur(10px) brightness(0.6);
-    }
-    100%{
-        transform:scale(1);
-        filter:blur(0px) brightness(1);
-    }
-}
-
-@keyframes logoReveal{
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
+/* RESET */
 *{
   margin:0;
   padding:0;
@@ -59,7 +19,48 @@ body{
   overflow:hidden;
 }
 
-/* PANTALLAS */
+/* ===== SPLASH CINEMÁTICO ===== */
+#splashScreen{
+  position:fixed;
+  inset:0;
+  background:url('assets/img/splash.jpg') center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  animation:bgCinematic 3.5s ease forwards;
+}
+
+.logoSplash{
+  opacity:0;
+  transform:translateY(25px);
+  animation:logoReveal 1s ease forwards;
+  animation-delay:2.5s;
+}
+
+.logoSplash img{
+  width:220px;
+}
+
+@keyframes bgCinematic{
+  0%{
+    transform:scale(1.1);
+    filter:blur(10px) brightness(0.6);
+  }
+  100%{
+    transform:scale(1);
+    filter:blur(0px) brightness(1);
+  }
+}
+
+@keyframes logoReveal{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ===== PANTALLAS ===== */
 .screen{
   position:fixed;
   width:100vw;
@@ -77,12 +78,10 @@ body{
   background-position:center;
 }
 
-/* Pantalla activa */
 .active{
   display:flex;
 }
 
-/* Overlay oscuro elegante */
 .overlay{
   position:absolute;
   width:100%;
@@ -92,7 +91,6 @@ body{
   left:0;
 }
 
-/* Contenido encima del overlay */
 .content{
   position:relative;
   z-index:2;
@@ -100,7 +98,6 @@ body{
   max-width:400px;
 }
 
-/* Input premium */
 .input-premium{
   width:100%;
   padding:16px;
@@ -114,42 +111,14 @@ body{
   outline:none;
 }
 
-/* Slider inferior */
-.slider-container{
-  position:fixed;
-  bottom:40px;
-  left:0;
-  right:0;
-  display:flex;
-  justify-content:center;
-  z-index:3;
-}
-
-.slider-btn{
-  padding:18px 40px;
-  border-radius:40px;
-  border:1px solid rgba(255,255,255,0.4);
-  background:rgba(0,0,0,0.6);
-  color:white;
-  font-size:16px;
-  letter-spacing:1px;
-}
-
 </style>
 </head>
-
 <body>
-<div id="splashScreen">
-    <div class="logoSplash">
-        <img src="assets/img/logo.png" alt="Construye Más">
-    </div>
-</div>
+
 <!-- SPLASH -->
-<div class="screen active" id="splash" style="background-image:url('fondo1.jpg');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h1>CONSTRUYE MÁS</h1>
-    <p>Sistema Interno</p>
+<div id="splashScreen">
+  <div class="logoSplash">
+    <img src="assets/img/logo.png" alt="Construye Más">
   </div>
 </div>
 
@@ -161,6 +130,7 @@ body{
     <input type="text" class="input-premium" id="nombreInput" placeholder="Nombre completo">
   </div>
 </div>
+
 <!-- PANTALLA CONCEPTO -->
 <div class="screen" id="screen-concepto" style="background-image:url('fondo2.jpg');">
   <div class="overlay"></div>
@@ -196,14 +166,31 @@ body{
 
 <script>
 
-/* Splash automático 2 segundos */
-setTimeout(()=>{
-  goTo("screen-nombre");
-},2000);
 function goTo(nextScreen){
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(nextScreen).classList.add("active");
 }
+
+window.addEventListener("load", function(){
+
+  // Activamos pantalla nombre detrás del splash
+  document.getElementById("screen-nombre").classList.add("active");
+
+  // Después de animación splash
+  setTimeout(()=>{
+      const splash = document.getElementById("splashScreen");
+
+      splash.style.transition = "opacity 0.6s ease";
+      splash.style.opacity = "0";
+
+      setTimeout(()=>{
+          splash.remove();
+      },600);
+
+  },3500);
+
+});
+
 document.getElementById("nombreInput").addEventListener("keydown", function(e){
   if(e.key === "Enter"){
     goTo("screen-concepto");
@@ -225,14 +212,7 @@ document.getElementById("montoInput").addEventListener("keydown", function(e){
     },1200);
   }
 });
-  setTimeout(()=>{
-    const splash = document.getElementById("splashScreen");
-    splash.style.transition = "opacity 0.6s ease";
-    splash.style.opacity = "0";
-    setTimeout(()=>{
-        splash.style.display="none";
-    },600);
-},4000);
+
 </script>
 
 </body>
