@@ -115,15 +115,70 @@ body{
     <input type="text" class="input-premium" id="nombreInput" placeholder="Nombre completo">
   </div>
 </div>
+<!-- PANTALLA CONCEPTO -->
+<div class="screen" id="screen-concepto" style="background-image:url('fondo2.jpg');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h2>Concepto / Obra</h2>
+    <input type="text" class="input-premium" id="conceptoInput" placeholder="Nombre de la obra">
+  </div>
+</div>
+
+<!-- PANTALLA MONTO -->
+<div class="screen" id="screen-monto" style="background-image:url('fondo3.jpg');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h2>Monto recibido</h2>
+    <input type="number" class="input-premium" id="montoInput" placeholder="$ 0.00">
+  </div>
+</div>
+
+<!-- PANTALLA LOADING -->
+<div class="screen" id="screen-loading" style="background-image:url('fondo3.jpg');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h2>Procesando recibo...</h2>
+  </div>
+</div>
+
+<!-- PANTALLA RECIBO -->
+<div class="screen" id="screen-recibo" style="background:#f2f2f2; color:black;">
+  <div class="content">
+    <h2>Aquí va el recibo V1</h2>
+  </div>
+</div>
 
 <script>
 
 /* Splash automático 2 segundos */
 setTimeout(()=>{
-  document.getElementById("splash").classList.remove("active");
-  document.getElementById("screen-nombre").classList.add("active");
+  goTo("screen-nombre");
 },2000);
+function goTo(nextScreen){
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(nextScreen).classList.add("active");
+}
+document.getElementById("nombreInput").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    goTo("screen-concepto");
+  }
+});
 
+document.getElementById("conceptoInput").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    goTo("screen-monto");
+  }
+});
+
+document.getElementById("montoInput").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    goTo("screen-loading");
+
+    setTimeout(()=>{
+      goTo("screen-recibo");
+    },1200);
+  }
+});
 </script>
 
 </body>
