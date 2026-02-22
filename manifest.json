@@ -1,7 +1,7 @@
 {
   "name": "Construye Más - Recibo Oficial",
   "short_name": "Recibos CM",
-  "start_url": ".",
+ "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
