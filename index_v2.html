@@ -5,6 +5,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="icon-192.png">
+
 <title>Recibo Construye Más V2</title>
 
 <style>
@@ -21,11 +27,11 @@ body{
   overflow:hidden;
 }
 
-/* ===== SPLASH CINEMÁTICO ===== */
+/* ===== SPLASH ===== */
 #splashScreen{
   position:fixed;
   inset:0;
-  background:url('assets/img/splash.jpg') center/cover no-repeat;
+  background:url('assets/img/splash.png') center/cover no-repeat;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -45,21 +51,12 @@ body{
 }
 
 @keyframes bgCinematic{
-  0%{
-    transform:scale(1.1);
-    filter:blur(10px) brightness(0.6);
-  }
-  100%{
-    transform:scale(1);
-    filter:blur(0px) brightness(1);
-  }
+  0%{ transform:scale(1.1); filter:blur(10px) brightness(0.6); }
+  100%{ transform:scale(1); filter:blur(0px) brightness(1); }
 }
 
 @keyframes logoReveal{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  to{ opacity:1; transform:translateY(0); }
 }
 
 /* ===== PANTALLAS ===== */
@@ -97,6 +94,16 @@ body{
   width:100%;
   max-width:400px;
   padding:20px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.content h2{
+  margin-top:60px;
+  text-align:center;
+  color:white;
 }
 
 .input-premium{
@@ -114,8 +121,8 @@ body{
 
 /* ===== SLIDER ===== */
 .slider-container{
-  margin-top:40px;
   width:100%;
+  margin-bottom:40px;
 }
 
 .slider-track{
@@ -163,12 +170,13 @@ body{
 </div>
 
 <!-- NOMBRE -->
-<div class="screen" id="screen-nombre"
-     style="background-image:url('assets/img/fondo_nombre.png');">
+<div class="screen active" id="screen-nombre" style="background-image:url('assets/img/fondo_nombre.png');">
   <div class="overlay"></div>
   <div class="content">
-    <h2>Nombre del cliente</h2>
-    <input type="text" class="input-premium" placeholder="Nombre completo">
+    <div>
+      <h2>Nombre del cliente</h2>
+      <input type="text" class="input-premium" placeholder="Nombre completo">
+    </div>
 
     <div class="slider-container">
       <div class="slider-track">
@@ -180,12 +188,13 @@ body{
 </div>
 
 <!-- CONCEPTO -->
-<div class="screen" id="screen-concepto"
-     style="background-image:url('assets/img/fondo_concepto.png');">
+<div class="screen" id="screen-concepto" style="background-image:url('assets/img/fondo_concepto.png');">
   <div class="overlay"></div>
   <div class="content">
-    <h2>Concepto / Obra</h2>
-    <input type="text" class="input-premium" placeholder="Nombre de la obra">
+    <div>
+      <h2>Concepto / Obra</h2>
+      <input type="text" class="input-premium" placeholder="Nombre de la obra">
+    </div>
 
     <div class="slider-container">
       <div class="slider-track">
@@ -197,12 +206,13 @@ body{
 </div>
 
 <!-- MONTO -->
-<div class="screen" id="screen-monto"
-     style="background-image:url('assets/img/fondo_monto.png');">
+<div class="screen" id="screen-monto" style="background-image:url('assets/img/fondo_monto.png');">
   <div class="overlay"></div>
   <div class="content">
-    <h2>Monto recibido</h2>
-    <input type="number" class="input-premium" placeholder="$ 0.00">
+    <div>
+      <h2>Monto recibido</h2>
+      <input type="number" class="input-premium" placeholder="$ 0.00">
+    </div>
 
     <div class="slider-container">
       <div class="slider-track">
@@ -214,11 +224,12 @@ body{
 </div>
 
 <!-- EMITIR -->
-<div class="screen" id="screen-emitir"
-     style="background-image:url('assets/img/fondo_emitir.png');">
+<div class="screen" id="screen-emitir" style="background-image:url('assets/img/fondo_emitir.png');">
   <div class="overlay"></div>
   <div class="content">
-    <h2>Emitir comprobante</h2>
+    <div>
+      <h2>Emitir comprobante</h2>
+    </div>
 
     <div class="slider-container">
       <div class="slider-track">
@@ -230,11 +241,12 @@ body{
 </div>
 
 <!-- CONFIRMACION -->
-<div class="screen" id="screen-confirmacion"
-     style="background-image:url('assets/img/fondo_confirmacion.png');">
+<div class="screen" id="screen-confirmacion" style="background-image:url('assets/img/fondo_confirmacion.png');">
   <div class="overlay"></div>
   <div class="content">
-    <h2>Comprobante emitido correctamente</h2>
+    <div>
+      <h2>Comprobante emitido correctamente</h2>
+    </div>
 
     <div class="slider-container">
       <div class="slider-track">
@@ -266,25 +278,27 @@ function nextScreen(){
   if(currentIndex < screens.length - 1){
     currentIndex++;
     goTo(screens[currentIndex]);
+  } else {
+    currentIndex = 0;
+    goTo(screens[currentIndex]);
   }
 }
 
-window.addEventListener("load", function(){
-
-  document.getElementById("screen-nombre").classList.add("active");
+/* SPLASH ESTABLE */
+document.addEventListener("DOMContentLoaded", function(){
 
   setTimeout(()=>{
       const splash = document.getElementById("splashScreen");
-      splash.style.transition = "opacity 0.6s ease";
-      splash.style.opacity = "0";
-
-      setTimeout(()=>{
-          splash.remove();
-      },600);
-  },3500);
+      if(splash){
+        splash.style.transition = "opacity 0.6s ease";
+        splash.style.opacity = "0";
+        setTimeout(()=> splash.remove(),600);
+      }
+  },3000);
 
 });
 
+/* SLIDER TOUCH */
 document.querySelectorAll(".slider-thumb").forEach(thumb => {
 
   let startX = 0;
@@ -328,6 +342,11 @@ document.querySelectorAll(".slider-thumb").forEach(thumb => {
   });
 
 });
+
+/* SERVICE WORKER */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
 
 </script>
 
